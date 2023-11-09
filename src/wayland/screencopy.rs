@@ -64,8 +64,15 @@ impl ScreencopyHandler for AppData {
             eprintln!("Error: No capture buffer?");
             return;
         }
-        let img = unsafe { buffer.as_mut().unwrap().to_image() };
-        let image = CaptureImage { img };
+        // let img = unsafe { buffer.as_mut().unwrap().to_image() };
+        // let image = CaptureImage { img };
+        let wl_buffer = buffer.as_mut().unwrap().buffer.clone(); // XXX swapping?
+        let buffer_info = &buffer.as_mut().unwrap().buffer_info;
+        let image = CaptureImage {
+            wl_buffer,
+            width: buffer_info.width,
+            height: buffer_info.height,
+        };
         match &capture.source {
             CaptureSource::Toplevel(toplevel) => {
                 self.send_event(Event::ToplevelCapture(toplevel.clone(), image))

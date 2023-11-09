@@ -24,7 +24,7 @@ use cctk::{
     toplevel_management::ToplevelManagerState,
     wayland_client::{
         globals::registry_queue_init,
-        protocol::{wl_output, wl_seat},
+        protocol::{wl_buffer, wl_output, wl_seat},
         Connection, QueueHandle,
     },
     workspace::WorkspaceState,
@@ -86,7 +86,9 @@ pub enum Event {
 
 #[derive(Clone, Debug)]
 pub struct CaptureImage {
-    pub img: iced::widget::image::Handle,
+    pub width: u32,
+    pub height: u32,
+    pub wl_buffer: wl_buffer::WlBuffer,
 }
 
 pub fn subscription(conn: Connection) -> iced::Subscription<Event> {

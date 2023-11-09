@@ -128,12 +128,11 @@ impl AppData {
         // XXX Handle other formats?
         let format = wl_shm::Format::Abgr8888.into();
 
-        /*
         if let Some(buffer_info) = buffer_infos
             .iter()
             .find(|x| x.type_ == WEnum::Value(BufferType::Dmabuf) && x.format == format)
         {
-            match self.create_gbm_backing(buffer_info, true) {
+            match self.create_gbm_backing(buffer_info, false) {
                 Ok(Some((backing, buffer))) => {
                     return Buffer {
                         backing,
@@ -145,7 +144,6 @@ impl AppData {
                 Err(err) => eprintln!("Failed to create gbm buffer: {}", err),
             }
         }
-        */
 
         // Fallback to shm buffer
         // Assume format is already known to be valid
@@ -206,7 +204,7 @@ impl Buffer {
 
 impl Drop for Buffer {
     fn drop(&mut self) {
-        self.buffer.destroy();
+        // self.buffer.destroy();
     }
 }
 
